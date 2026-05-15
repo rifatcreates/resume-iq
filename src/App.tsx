@@ -1,9 +1,6 @@
-function App() {
-  return (
-    <div className='min-h-screen bg-main-gradient p-4 sm:p-6 lg:p-8 flex items-center justify-center'>
-      <h1 className='text-7xl text-white text-center'>AI RESUME ANALYZER</h1>
-    </div>
-  )
-}
+import LoginPage from "./pages/LoginPage"
 
+function App() {
+  return <LoginPage />
+}
 export default App
