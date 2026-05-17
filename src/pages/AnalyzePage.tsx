@@ -1,14 +1,94 @@
-import Header from "../components/layout/Header"
+import { useState } from 'react'
+import { toast } from 'sonner'
+import Header from '../components/layout/Header'
+import ResumeUploader from '../components/upload/ResumeUploader'
+import { useAnalyzeResume } from '../hooks/useAnalyzeResume'
+import type { AnalysisResult } from '../types'
+
+type AnalyzeView = 'upload' | 'loading' | 'result'
 
 const AnalyzePage = () => {
-    return(
-        <div>
-            <Header />
-            <div className="flex items-center justify-center h-[calc(100vh-73px)]">
-                <p className="text-slate-400 text-xl">Upload Section — Coming Soon</p>
+  const [currentView, setCurrentView] = useState<AnalyzeView>('upload')
+  const [analysisResult, setAnalysisResult] = useState<AnalysisResult | null>(null)
+  const [fileName, setFileName] = useState('')
+
+  const { mutate: analyzeResume } = useAnalyzeResume()
+
+  const handleUpload = (file: File) => {
+    setCurrentView('loading')
+
+    analyzeResume(file, {
+      onSuccess: (data) => {
+        setAnalysisResult(data.result)
+        setFileName(data.fileName)
+        setCurrentView('result')
+        toast.success('Analysis complete!')
+      },
+      onError: (error: Error) => {
+        toast.error(error.message || 'Analysis failed. Please try again.')
+        setCurrentView('upload')
+      },
+    })
+  }
+
+  const handleNewAnalysis = () => {
+    setAnalysisResult(null)
+    setFileName('')
+    setCurrentView('upload')
+  }
+
+  return (
+    <div className="min-h-screen bg-main-gradient">
+      <Header />
+
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12">
+
+        {/* Upload View */}
+        {currentView === 'upload' && (
+          <>
+            <div className="text-center mb-10">
+              <h2 className="text-4xl font-bold text-white mb-3">
+                AI Resume Analyzer
+              </h2>
+              <p className="text-slate-400">
+                Upload your PDF resume and get instant AI-powered feedback
+              </p>
             </div>
-        </div>
-    )
+            <ResumeUploader onUpload={handleUpload} />
+          </>
+        )}
+
+        {/* Loading View */}
+        {currentView === 'loading' && (
+          <div className="flex flex-col items-center justify-center min-h-[60vh] gap-4">
+            <div className="w-16 h-16 border-4 border-teal-500/30 border-t-teal-400 rounded-full animate-spin" />
+            <h3 className="text-white text-2xl font-semibold">
+              Analyzing Your Resume
+            </h3>
+            <p className="text-slate-400">
+              Please wait while AI reviews your resume...
+            </p>
+          </div>
+        )}
+
+        {/* Result View */}
+        {currentView === 'result' && analysisResult && (
+          <div className="text-center">
+            <p className="text-white text-2xl">
+              Result coming in Day 8!FileName: {fileName}
+            </p>
+            <button
+              onClick={handleNewAnalysis}
+              className="mt-4 text-teal-400 underline cursor-pointer"
+            >
+              New Analysis
+            </button>
+          </div>
+        )}
+
+      </div>
+    </div>
+  )
 }
 
 export default AnalyzePage

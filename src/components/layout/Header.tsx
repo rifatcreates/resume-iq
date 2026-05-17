@@ -6,7 +6,7 @@ const Header = () => {
 
     const getNameFromEmail = (email: string) => {
         const namePart = email.split('@')[0]
-        const parts = namePart.split('.')
+        const parts = namePart.split(/[.\-_+]/)
         return parts
             .map((part) => {
                 const word = part.replace(/[0-9]/g, '')
