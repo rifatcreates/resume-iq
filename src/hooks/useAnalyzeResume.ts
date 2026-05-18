@@ -43,7 +43,7 @@ export const useAnalyzeResume = () => {
         })
       }
 
-      return { result: parsed, fileName: file.name }
+      return { result: parsed, fileName: file.name, resumeText: text }
     },
   })
 }

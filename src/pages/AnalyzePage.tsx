@@ -4,6 +4,7 @@ import Header from '../components/layout/Header'
 import ResumeUploader from '../components/upload/ResumeUploader'
 import { useAnalyzeResume } from '../hooks/useAnalyzeResume'
 import type { AnalysisResult } from '../types'
+import AnalysisResultComponent from '../components/results/AnalysisResult'
 
 type AnalyzeView = 'upload' | 'loading' | 'result'
 
@@ -11,6 +12,7 @@ const AnalyzePage = () => {
   const [currentView, setCurrentView] = useState<AnalyzeView>('upload')
   const [analysisResult, setAnalysisResult] = useState<AnalysisResult | null>(null)
   const [fileName, setFileName] = useState('')
+  const [resumeText, setResumeText] = useState('')
 
   const { mutate: analyzeResume } = useAnalyzeResume()
 
@@ -21,6 +23,7 @@ const AnalyzePage = () => {
       onSuccess: (data) => {
         setAnalysisResult(data.result)
         setFileName(data.fileName)
+        setResumeText(data.resumeText)
         setCurrentView('result')
         toast.success('Analysis complete!')
       },
@@ -43,7 +46,6 @@ const AnalyzePage = () => {
 
       <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12">
 
-        {/* Upload View */}
         {currentView === 'upload' && (
           <>
             <div className="text-center mb-10">
@@ -58,7 +60,6 @@ const AnalyzePage = () => {
           </>
         )}
 
-        {/* Loading View */}
         {currentView === 'loading' && (
           <div className="flex flex-col items-center justify-center min-h-[60vh] gap-4">
             <div className="w-16 h-16 border-4 border-teal-500/30 border-t-teal-400 rounded-full animate-spin" />
@@ -71,19 +72,17 @@ const AnalyzePage = () => {
           </div>
         )}
 
-        {/* Result View */}
         {currentView === 'result' && analysisResult && (
-          <div className="text-center">
-            <p className="text-white text-2xl">
-              Result coming in Day 8!FileName: {fileName}
-            </p>
-            <button
-              onClick={handleNewAnalysis}
-              className="mt-4 text-teal-400 underline cursor-pointer"
-            >
-              New Analysis
-            </button>
-          </div>
+          <div className="flex justify-center px-4">
+            <div className="w-full max-w-4xl">
+              <AnalysisResultComponent
+                result={analysisResult}
+                fileName={fileName}
+                resumeText={resumeText}
+                onNewAnalysis={handleNewAnalysis}
+              />
+            </div>
+        </div>
         )}
 
       </div>
