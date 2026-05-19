@@ -1,5 +1,5 @@
-import { Badge } from '../../components/ui/badge'
-import type { AnalysisResult } from '../../types'
+import { Badge } from '@/components/ui/badge'
+import type{ AnalysisResult } from '@/types'
 
 interface ScoreCardProps {
   result: AnalysisResult
@@ -27,24 +27,27 @@ const ScoreCard = ({ result, fileName, onNewAnalysis }: ScoreCardProps) => {
   return (
     <div className="space-y-4">
 
-      <div className="bg-linear-to-br from-slate-800/60 to-slate-700/40 rounded-2xl p-4 border border-slate-600/50 flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-lg bg-linear-to-br from-teal-500/20 to-sky-500/20 border border-teal-500/30 flex items-center justify-center">
-            <span className="text-lg">📄</span>
+      <div className="bg-linear-to-br from-slate-800/60 to-slate-700/40 rounded-2xl p-4 border border-slate-600/50">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-lg bg-linear-to-br from-teal-500/20 to-sky-500/20 border border-teal-500/30 flex items-center justify-center shrink-0">
+              <span className="text-lg">📄</span>
+            </div>
+            <div className="min-w-0">
+              <p className="text-green-400 font-semibold text-sm">Analysis Complete</p>
+              <p className="text-slate-400 text-xs truncate max-w-50">{fileName}</p>
+            </div>
           </div>
-          <div>
-            <p className="text-green-400 font-semibold text-sm">Analysis Complete</p>
-            <p className="text-slate-400 text-xs truncate max-w-50">{fileName}</p>
-          </div>
+          <button
+            onClick={onNewAnalysis}
+            className="px-4 py-2 bg-red-500/20 text-red-300 rounded-xl border border-red-500/30 hover:bg-red-500/30 transition text-sm cursor-pointer w-full sm:w-auto text-center"
+          >
+            ✖ New Analysis
+          </button>
         </div>
-        <button
-          onClick={onNewAnalysis}
-          className="px-4 py-2 bg-red-500/20 text-red-300 rounded-xl border border-red-500/30 hover:bg-red-500/30 transition text-sm cursor-pointer"
-        >
-          ✖ New Analysis
-        </button>
       </div>
 
+      {/* Score Card */}
       <div className="bg-linear-to-br from-cyan-500/30 via-blue-600/20 to-sky-900/40 rounded-2xl p-8 border border-sky-500/20 text-center">
         <h3 className="text-white text-xl font-semibold mb-4">🏆 Overall Score</h3>
         <p className="text-7xl font-bold text-teal-400 mb-4">

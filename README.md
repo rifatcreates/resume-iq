@@ -2,7 +2,7 @@
 An intelligent web app that analyzes your resume using Google Gemini AI. Upload your PDF resume and get instant feedback on strengths, improvements, ATS compatibility, performance metrics, and more.
 
 ## Live Demo
-🔗 [resumeiq-xxx.vercel.app](https://resumeiq-xxx.vercel.app)
+🔗 [https://resume-iq-five-theta.vercel.app/](https://resume-iq-five-theta.vercel.app/)
 
 ## Features
 - 🔐 Email/password authentication
